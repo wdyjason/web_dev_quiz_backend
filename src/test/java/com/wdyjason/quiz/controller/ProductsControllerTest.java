@@ -30,35 +30,64 @@ class ProductsControllerTest {
     @Autowired
     ProductsRepository productsRepository;
 
-    int savedId;
-
     @BeforeEach
     public void setUp() {
+        productsRepository.deleteAll();
+    }
+
+    @Test
+    void should_get_product_list_success() throws Exception {
 
         ProductsEntity toSave = ProductsEntity.builder()
-                .id(1)
                 .name("test")
                 .unit("unit")
                 .price(2)
                 .imgUrl("imgUrl")
                 .quantity(3)
                 .build();
-        productsRepository.deleteAll();
-        savedId = productsRepository.save(toSave).getId();
-
-    }
-
-    @Test
-    void should_get_product_list_success() throws Exception {
-
+        int savedId = productsRepository.save(toSave).getId();
         mockMvc.perform(get("/product/list"))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].id", is(savedId)))
                 .andExpect(jsonPath("$[0].name", is("test")))
                 .andExpect(jsonPath("$[0].unit", is("unit")))
                 .andExpect(jsonPath("$[0].imgUrl", is("imgUrl")))
                 .andExpect(jsonPath("$[0].price", is(2)))
                 .andExpect(jsonPath("$[0].quantity", is(3)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void should_get_order_list_success() throws Exception {
+
+        ProductsEntity toSave = ProductsEntity.builder()
+                .name("test")
+                .unit("unit")
+                .price(2)
+                .imgUrl("imgUrl")
+                .quantity(3)
+                .build();
+        int savedId = productsRepository.save(toSave).getId();
+
+        ProductsEntity toSave1 = ProductsEntity.builder()
+                .name("test1")
+                .unit("unit1")
+                .price(2)
+                .imgUrl("imgUrl1")
+                .quantity(0)
+                .build();
+
+        productsRepository.save(toSave1);
+
+        mockMvc.perform(get("/order/list"))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(savedId)))
+                .andExpect(jsonPath("$[0].name", is("test")))
+                .andExpect(jsonPath("$[0].unit", is("unit")))
+                .andExpect(jsonPath("$[0].imgUrl", is("imgUrl")))
+                .andExpect(jsonPath("$[0].price", is(2)))
+                .andExpect(jsonPath("$[0].quantity", is(3)))
+                .andExpect(status().isOk());
+
     }
 }
