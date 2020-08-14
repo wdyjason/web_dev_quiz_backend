@@ -19,4 +19,6 @@ public class ProductsDto {
     private String unit;
 
     private String imgUrl;
+
+    private Integer quantity;
 }

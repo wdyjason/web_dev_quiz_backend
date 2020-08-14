@@ -35,10 +35,37 @@ class ProductsServiceTest {
                 .price(2)
                 .unit("unit")
                 .imgUrl("url")
+                .quantity(3)
                 .build();
         when(productsRepository.findAll()).thenReturn(Arrays.asList(toReturn));
 
         List<ProductsDto> resDtoList =  productsService.getProductList();
+
+        assertEquals(Arrays.asList(toReturn.toDto()), resDtoList);
+    }
+
+    @Test
+    void should_get_order_list_success() {
+        ProductsEntity toReturn = ProductsEntity.builder()
+                .id(1)
+                .name("test")
+                .price(2)
+                .unit("unit")
+                .imgUrl("url")
+                .quantity(3)
+                .build();
+
+        ProductsEntity toReturn1 = ProductsEntity.builder()
+                .id(2)
+                .name("test")
+                .price(2)
+                .unit("unit")
+                .imgUrl("url")
+                .quantity(0)
+                .build();
+        when(productsRepository.findAll()).thenReturn(Arrays.asList(toReturn, toReturn1));
+
+        List<ProductsDto> resDtoList =  productsService.getOrderList();
 
         assertEquals(Arrays.asList(toReturn.toDto()), resDtoList);
     }

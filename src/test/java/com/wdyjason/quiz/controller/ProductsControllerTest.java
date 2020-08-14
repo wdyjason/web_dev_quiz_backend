@@ -41,6 +41,7 @@ class ProductsControllerTest {
                 .unit("unit")
                 .price(2)
                 .imgUrl("imgUrl")
+                .quantity(3)
                 .build();
         productsRepository.deleteAll();
         savedId = productsRepository.save(toSave).getId();
@@ -57,6 +58,7 @@ class ProductsControllerTest {
                 .andExpect(jsonPath("$[0].unit", is("unit")))
                 .andExpect(jsonPath("$[0].imgUrl", is("imgUrl")))
                 .andExpect(jsonPath("$[0].price", is(2)))
+                .andExpect(jsonPath("$[0].quantity", is(3)))
                 .andExpect(status().isOk());
     }
 }

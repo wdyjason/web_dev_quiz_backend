@@ -31,6 +31,8 @@ public class ProductsEntity {
 
     private String imgUrl;
 
+    private Integer quantity;
+
     public ProductsDto toDto() {
         return ProductsDto.builder()
                 .id(id)
@@ -38,6 +40,7 @@ public class ProductsEntity {
                 .price(price)
                 .unit(unit)
                 .imgUrl(imgUrl)
+                .quantity(quantity)
                 .build();
     }
 }

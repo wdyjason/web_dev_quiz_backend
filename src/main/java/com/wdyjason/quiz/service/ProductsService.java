@@ -23,4 +23,11 @@ public class ProductsService {
         return productsRepository.findAll().stream().map(ProductsEntity::toDto).collect(Collectors.toList());
     }
 
+    public List<ProductsDto> getOrderList() {
+        return productsRepository.findAll()
+                .stream()
+                .filter(f -> f.getQuantity() > 0)
+                .map(ProductsEntity::toDto)
+                .collect(Collectors.toList());
+    }
 }
