@@ -11,12 +11,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.MultiValueMap;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -107,5 +107,35 @@ class ProductsControllerTest {
         mockMvc.perform(put("/order").content(putStr).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         assertEquals(1, productsRepository.count());
+    }
+
+    @Test
+    void should_patch_one_quantity_success() throws Exception {
+
+        ProductsEntity origin = ProductsEntity.builder()
+                .name("test")
+                .unit("unit")
+                .price(2)
+                .imgUrl("imgUrl")
+                .quantity(3)
+                .build();
+        int originId = productsRepository.save(origin).getId();
+
+        ProductsEntity toExpect = ProductsEntity.builder()
+                .id(originId)
+                .name("test")
+                .unit("unit")
+                .price(2)
+                .imgUrl("imgUrl")
+                .quantity(0)
+                .build();
+
+        mockMvc.perform(patch("/order/" + originId + "?quantity=0"))
+                .andExpect(status().isOk());
+
+        ProductsEntity result = productsRepository.findById(originId).get();
+
+        assertEquals(toExpect, result);
+
     }
 }

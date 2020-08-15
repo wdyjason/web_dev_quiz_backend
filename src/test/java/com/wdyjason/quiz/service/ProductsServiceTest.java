@@ -94,4 +94,10 @@ class ProductsServiceTest {
         verify(productsRepository, times(1)).save(toSave);
     }
 
+    @Test
+    void should_patch_one_success() {
+        productsService.patchOneQuantity(1, 2);
+        verify(productsRepository, times(1)).patchOneQuantity(1, 2);
+    }
+
 }
