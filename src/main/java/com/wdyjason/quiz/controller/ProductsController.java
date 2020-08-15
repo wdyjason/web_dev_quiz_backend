@@ -3,8 +3,7 @@ package com.wdyjason.quiz.controller;
 import com.wdyjason.quiz.dto.ProductsDto;
 import com.wdyjason.quiz.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +21,10 @@ public class ProductsController {
     @GetMapping("/order/list")
     public List<ProductsDto> getOrders() {
         return productsService.getOrderList();
+    }
+
+    @PutMapping("/order")
+    public void createOne(@RequestBody ProductsDto dto) {
+        productsService.createOne(dto.toEntity());
     }
 }

@@ -1,5 +1,6 @@
 package com.wdyjason.quiz.dto;
 
+import com.wdyjason.quiz.enity.ProductsEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,14 @@ public class ProductsDto {
     private String imgUrl;
 
     private Integer quantity;
+
+    public ProductsEntity toEntity() {
+        return ProductsEntity.builder()
+                .quantity(0)
+                .imgUrl(imgUrl)
+                .name(name)
+                .price(price)
+                .unit(unit)
+                .build();
+    }
 }

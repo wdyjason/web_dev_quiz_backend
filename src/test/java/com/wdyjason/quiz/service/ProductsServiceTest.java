@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 class ProductsServiceTest {
@@ -68,6 +68,30 @@ class ProductsServiceTest {
         List<ProductsDto> resDtoList =  productsService.getOrderList();
 
         assertEquals(Arrays.asList(toReturn.toDto()), resDtoList);
+    }
+
+    @Test
+    void should_save_one_success() {
+        ProductsEntity toSave = ProductsEntity.builder()
+                .name("test")
+                .price(2)
+                .unit("unit")
+                .imgUrl("url")
+                .build();
+        ProductsEntity toReturn = ProductsEntity.builder()
+                .id(1)
+                .name("test")
+                .price(2)
+                .unit("unit")
+                .imgUrl("url")
+                .quantity(0)
+                .build();
+
+        when(productsRepository.save(toSave)).thenReturn(toReturn);
+
+        productsService.createOne(toSave);
+
+        verify(productsRepository, times(1)).save(toSave);
     }
 
 }

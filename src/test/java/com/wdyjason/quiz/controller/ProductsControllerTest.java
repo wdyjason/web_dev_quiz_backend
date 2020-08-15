@@ -1,5 +1,6 @@
 package com.wdyjason.quiz.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wdyjason.quiz.enity.ProductsEntity;
 import com.wdyjason.quiz.repository.ProductsRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,14 +9,15 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -89,5 +91,21 @@ class ProductsControllerTest {
                 .andExpect(jsonPath("$[0].quantity", is(3)))
                 .andExpect(status().isOk());
 
+    }
+
+    @Test
+    void should_create_one_success() throws Exception {
+
+        ProductsEntity toSave = ProductsEntity.builder()
+                .name("test")
+                .unit("unit")
+                .price(2)
+                .imgUrl("imgUrl")
+                .build();
+        ObjectMapper ObjectMapper = new ObjectMapper();
+        String putStr = ObjectMapper.writeValueAsString(toSave);
+        mockMvc.perform(put("/order").content(putStr).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        assertEquals(1, productsRepository.count());
     }
 }

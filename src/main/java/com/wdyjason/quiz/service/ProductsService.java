@@ -30,4 +30,9 @@ public class ProductsService {
                 .map(ProductsEntity::toDto)
                 .collect(Collectors.toList());
     }
+
+    public void createOne(ProductsEntity toSave) {
+        toSave.setQuantity(0);
+        productsRepository.save(toSave);
+    }
 }
