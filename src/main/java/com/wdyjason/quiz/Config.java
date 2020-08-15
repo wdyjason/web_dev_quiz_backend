@@ -1,3 +1,5 @@
+package com.wdyjason.quiz;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,6 +14,6 @@ public class Config implements WebMvcConfigurer {
                 .allowedMethods("GET","HEAD","POST","PUT","DELETE","OPTIONS")
                 .allowCredentials(true)
                 .maxAge(3600)
-                .allowedHeaders("Access-Control-Allow-Origin","*");
+                .allowedHeaders("*");
     }
 }
